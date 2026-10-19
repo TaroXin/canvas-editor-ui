@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue 2（script 引入） - canvas-editor-ui</title>
+  <link rel="stylesheet" href="/playground.css" />
+</head>
+<body>
+  <div id="app">
+    <nav class="nav"><strong>canvas-editor-ui</strong><a href="/">首页</a><a href="/vanilla.html">原生 JS（ESM）</a><a href="/script.html">script 引入</a><a href="/vue2.html">Vue 2</a><a href="/vue2-script.html">Vue 2（script 引入）</a><span class="actions" id="actions"></span></nav>
+    <div class="app">
+      <canvas-editor ref="editor" :data="data" @ready="onReady" @change="onChange"></canvas-editor>
+    </div>
+  </div>
+  <script src="/sample-data.js"></script>
+  <script src="/lib/vue.js"></script>
+  <script src="/lib/canvas-editor.umd.js"></script>
+  <script src="/lib/canvas-editor-ui.umd.js"></script>
+  <!-- 检测到全局 Vue 时自动注册 <canvas-editor> 组件 -->
+  <script src="/lib/canvas-editor-vue2.umd.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: { data: window.SAMPLE_DATA, changeCount: 0 },
+      methods: {
+        onReady: function (editor) { window.editor = editor },
+        onChange: function () { this.changeCount++ }
+      },
+      mounted: function () {
+        document.querySelectorAll('.nav a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === location.pathname) })
+      }
+    })
+  </script>
+</body>
+</html>

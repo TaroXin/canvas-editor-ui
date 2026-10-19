@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>canvas-editor-ui 预览</title>
+  <link rel="stylesheet" href="/playground.css" />
+</head>
+<body>
+  <nav class="nav"><strong>canvas-editor-ui</strong><a href="/">首页</a><a href="/vanilla.html">原生 JS（ESM）</a><a href="/script.html">script 引入</a><a href="/vue2.html">Vue 2</a><a href="/vue2-script.html">Vue 2（script 引入）</a><span class="actions" id="actions"></span></nav>
+  <main class="home">
+    <h1>canvas-editor-ui 预览</h1>
+    <p>同一套工具栏、状态栏和弹窗，分别用四种方式接入 <code>@baohu/canvas-editor</code>。两个 script 页面加载的是构建后的 UMD 文件，与发布到 npm 的产物一致；其余页面直接引用源码，修改后会热更新。</p>
+    <div class="cards">
+      <a class="card" href="/vanilla.html"><h2>原生 JS（ESM）</h2><p><code>import { createEditorUI }</code>，适合 webpack / vite 等构建工具。</p></a>
+      <a class="card" href="/script.html"><h2>script 引入</h2><p>HTML 中直接用 <code>&lt;script&gt;</code> 引入 UMD，无需构建工具。</p></a>
+      <a class="card" href="/vue2.html"><h2>Vue 2</h2><p><code>Vue.use()</code> 后使用 <code>&lt;canvas-editor&gt;</code> 组件。</p></a>
+      <a class="card" href="/vue2-script.html"><h2>Vue 2（script 引入）</h2><p>页面已有全局 Vue 时，引入后自动注册组件。</p></a>
+    </div>
+  </main>
+  <script>document.querySelectorAll('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === location.pathname))</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@baohu/canvas-editor-ui": ["../packages/ui/src/index.ts"],
+      "@baohu/canvas-editor-vue2": ["../packages/vue2/src/index.ts"]
+    },
+    "baseUrl": "."
+  },
+  "include": ["src", "vite.config.ts"]
+}

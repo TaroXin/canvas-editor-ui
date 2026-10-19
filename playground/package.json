@@ -1,0 +1,13 @@
+{
+  "name": "playground",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 5180"
+  },
+  "dependencies": {
+    "@baohu/canvas-editor": "1.0.5-baohu.3",
+    "@baohu/canvas-editor-ui": "workspace:^",
+    "@baohu/canvas-editor-vue2": "workspace:^",
+    "vue": "2.7.16"
+  }
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>script 引入 - canvas-editor-ui</title>
+  <link rel="stylesheet" href="/playground.css" />
+</head>
+<body>
+  <nav class="nav"><strong>canvas-editor-ui</strong><a href="/">首页</a><a href="/vanilla.html">原生 JS（ESM）</a><a href="/script.html">script 引入</a><a href="/vue2.html">Vue 2</a><a href="/vue2-script.html">Vue 2（script 引入）</a><span class="actions" id="actions"></span></nav>
+  <div id="app" class="app"></div>
+  <script src="/sample-data.js"></script>
+  <!-- 1. 编辑器核心（全局变量 window['canvas-editor']） -->
+  <script src="/lib/canvas-editor.umd.js"></script>
+  <!-- 2. 界面（全局变量 CanvasEditorUI） -->
+  <script src="/lib/canvas-editor-ui.umd.js"></script>
+  <script>
+    var ui = CanvasEditorUI.createEditorUI('#app', {
+      data: window.SAMPLE_DATA,
+      // 在默认按钮后追加一个自定义按钮
+      toolbar: CanvasEditorUI.DEFAULT_TOOLBAR.concat(['|', {
+        key: 'save',
+        text: '保存',
+        title: '打印 JSON 到控制台',
+        keepEnabledInReadonly: true,
+        onClick: function (ctx) {
+          console.log(JSON.stringify(ctx.editor.command.getValue().data))
+        }
+      }])
+    })
+    window.ui = ui
+    document.querySelectorAll('.nav a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === location.pathname) })
+  </script>
+</body>
+</html>

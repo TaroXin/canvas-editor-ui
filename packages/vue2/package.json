@@ -1,0 +1,43 @@
+{
+  "name": "@baohu/canvas-editor-vue2",
+  "version": "1.0.0",
+  "description": "Vue 2 component for @baohu/canvas-editor with toolbar and statusbar",
+  "license": "MIT",
+  "main": "./dist/canvas-editor-vue2.umd.js",
+  "module": "./dist/canvas-editor-vue2.esm.js",
+  "unpkg": "./dist/canvas-editor-vue2.umd.js",
+  "jsdelivr": "./dist/canvas-editor-vue2.umd.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaroXin/canvas-editor-ui.git",
+    "directory": "packages/vue2"
+  },
+  "keywords": [
+    "canvas-editor",
+    "vue2",
+    "editor"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "type:check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@baohu/canvas-editor-ui": "workspace:^"
+  },
+  "peerDependencies": {
+    "@baohu/canvas-editor": ">=1.0.5-baohu.3",
+    "vue": "^2.6.0"
+  },
+  "devDependencies": {
+    "@baohu/canvas-editor": "1.0.5-baohu.3",
+    "vue": "2.7.16"
+  }
+}

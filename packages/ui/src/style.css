@@ -1,0 +1,411 @@
+/* 布局：工具栏 + 可滚动编辑区 + 状态栏，高度由外部容器决定 */
+.ceu-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #f2f4f7;
+  color: #3d4757;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  box-sizing: border-box;
+}
+
+.ceu-root *,
+.ceu-dialog-container * {
+  box-sizing: border-box;
+}
+
+.ceu-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ceu-editor > div {
+  margin: 20px auto;
+}
+
+.ceu-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.ceu-active {
+  background: rgba(25, 55, 88, 0.08);
+}
+
+.ceu-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* 工具栏 */
+.ceu-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 2px;
+  padding: 8px 12px;
+  background: #f2f4f7;
+  border-bottom: 1px solid #e2e6ed;
+  user-select: none;
+}
+
+.ceu-toolbar__divider {
+  width: 1px;
+  height: 16px;
+  margin: 0 6px;
+  background: #cfd2d8;
+}
+
+.ceu-toolbar__button,
+.ceu-statusbar__button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.ceu-toolbar__button:hover,
+.ceu-statusbar__button:hover,
+.ceu-select:hover {
+  background: rgba(25, 55, 88, 0.04);
+}
+
+.ceu-toolbar__item.ceu-active > .ceu-toolbar__button,
+.ceu-toolbar__button.ceu-active {
+  background: rgba(25, 55, 88, 0.08);
+}
+
+.ceu-toolbar__text {
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+.ceu-toolbar__button--arrow::after,
+.ceu-select::after {
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border: 3px solid transparent;
+  border-top: 4px solid #767c85;
+  transform: translateY(2px);
+}
+
+.ceu-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.ceu-select__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 颜色 */
+.ceu-color {
+  flex-direction: column;
+}
+
+.ceu-color .ceu-icon {
+  width: 14px;
+  height: 12px;
+}
+
+.ceu-color__bar {
+  width: 14px;
+  height: 3px;
+  margin-top: 1px;
+  border: 1px solid #e2e6ed;
+}
+
+.ceu-color__input {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 下拉面板 */
+.ceu-dropdown {
+  position: relative;
+}
+
+.ceu-dropdown__panel {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  display: none;
+  min-width: 100%;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e6ed;
+  border-radius: 2px;
+  box-shadow: 0 2px 12px 0 rgba(56, 56, 56, 0.2);
+}
+
+.ceu-dropdown__panel--bottom {
+  top: calc(100% + 4px);
+}
+
+.ceu-dropdown__panel--top {
+  bottom: calc(100% + 4px);
+}
+
+.ceu-dropdown__panel--visible {
+  display: block;
+}
+
+.ceu-option-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.ceu-option-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ceu-option-list li:hover {
+  background: #ebecef;
+}
+
+.ceu-option-list li.ceu-active {
+  background: #e2e6ed;
+}
+
+/* 表格选择器 */
+.ceu-table-picker__title {
+  padding: 2px 2px 6px;
+  color: #3d4757;
+}
+
+.ceu-table-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(10, 16px);
+  gap: 3px;
+}
+
+.ceu-table-picker__grid span {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #e2e6ed;
+  cursor: pointer;
+}
+
+.ceu-table-picker__grid span.ceu-active {
+  background: rgba(73, 145, 242, 0.15);
+  border-color: rgba(73, 145, 242, 0.5);
+}
+
+/* 状态栏 */
+.ceu-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  min-height: 30px;
+  padding: 2px 8px 2px 16px;
+  background: #f2f4f7;
+  border-top: 1px solid #e2e6ed;
+  user-select: none;
+}
+
+.ceu-statusbar__left,
+.ceu-statusbar__right,
+.ceu-statusbar__group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ceu-statusbar__left {
+  gap: 12px;
+}
+
+.ceu-statusbar__left > span {
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+
+.ceu-statusbar__scale,
+.ceu-statusbar__mode {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ceu-statusbar__scale:hover,
+.ceu-statusbar__mode:hover {
+  background: rgba(25, 55, 88, 0.04);
+}
+
+.ceu-statusbar .ceu-dropdown__panel {
+  left: auto;
+  right: 0;
+}
+
+/* 弹窗 */
+.ceu-dialog-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.ceu-dialog-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  font-size: 14px;
+  color: #3d4757;
+}
+
+.ceu-dialog {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  padding: 0 24px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e6ed;
+  border-radius: 2px;
+  box-shadow: 0 2px 12px 0 rgba(56, 56, 56, 0.2);
+}
+
+.ceu-dialog__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e2e6ed;
+}
+
+.ceu-dialog__close {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('./icons/close.svg') no-repeat;
+}
+
+.ceu-dialog__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ceu-dialog__label {
+  position: relative;
+  flex-shrink: 0;
+  width: 64px;
+  text-align: right;
+}
+
+.ceu-dialog__label--required::before {
+  content: '*';
+  position: absolute;
+  left: -8px;
+  color: #f56c6c;
+}
+
+.ceu-dialog__field input,
+.ceu-dialog__field textarea,
+.ceu-dialog__field select {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  padding: 5px;
+  font: inherit;
+  border: 1px solid #d3d3d3;
+  border-radius: 2px;
+  outline: none;
+}
+
+.ceu-dialog__field textarea {
+  resize: vertical;
+}
+
+.ceu-dialog__field input:focus,
+.ceu-dialog__field textarea:focus,
+.ceu-dialog__field select:focus {
+  border-color: #4991f2;
+}
+
+.ceu-dialog__field .ceu-dialog__input--error {
+  border-color: #f56c6c;
+}
+
+.ceu-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.ceu-dialog__footer button {
+  padding: 0 16px;
+  line-height: 26px;
+  font: inherit;
+  background: #ffffff;
+  border: 1px solid #e2e6ed;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.ceu-dialog__footer button:hover {
+  background: rgba(25, 55, 88, 0.04);
+}
+
+.ceu-dialog__footer .ceu-dialog__confirm {
+  color: #ffffff;
+  background: #4991f2;
+  border-color: #4991f2;
+}
+
+.ceu-dialog__footer .ceu-dialog__confirm:hover {
+  background: #5b9cf3;
+}

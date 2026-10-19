@@ -1,0 +1,40 @@
+{
+  "name": "@baohu/canvas-editor-ui",
+  "version": "1.0.0",
+  "description": "Toolbar, statusbar and dialogs for @baohu/canvas-editor, framework-agnostic",
+  "license": "MIT",
+  "main": "./dist/canvas-editor-ui.umd.js",
+  "module": "./dist/canvas-editor-ui.esm.js",
+  "unpkg": "./dist/canvas-editor-ui.umd.js",
+  "jsdelivr": "./dist/canvas-editor-ui.umd.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaroXin/canvas-editor-ui.git",
+    "directory": "packages/ui"
+  },
+  "keywords": [
+    "canvas-editor",
+    "toolbar",
+    "editor"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "type:check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@baohu/canvas-editor": ">=1.0.5-baohu.3"
+  },
+  "devDependencies": {
+    "@baohu/canvas-editor": "1.0.5-baohu.3",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
+  }
+}
