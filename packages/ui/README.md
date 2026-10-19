@@ -51,7 +51,15 @@ ui.destroy()                  // 销毁
 
 数组元素可以是内置按钮的 key、分隔线 `'|'`，或自定义按钮对象。
 
-内置按钮：`undo` `redo` `painter` `format` `font` `size` `sizeAdd` `sizeMinus` `bold` `italic` `underline` `strikeout` `superscript` `subscript` `color` `highlight` `title` `left` `center` `right` `alignment` `justify` `rowMargin` `list` `table` `image` `hyperlink` `separator` `pageBreak` `control` `checkbox` `date` `search` `print` `pdf`
+默认显示的按钮（`DEFAULT_TOOLBAR`）：`undo` `redo` `painter` `format` `font` `size` `sizeAdd` `sizeMinus` `bold` `italic` `underline` `strikeout` `superscript` `subscript` `color` `highlight` `title` `left` `center` `right` `alignment` `justify` `rowMargin` `list` `table` `image` `hyperlink` `separator` `pageBreak` `checkbox` `date` `search`
+
+内置但默认不显示、需要时自行加入的按钮：`control`（插入控件）`print`（打印）`pdf`（导出 PDF）
+
+```js
+createEditorUI('#app', {
+  toolbar: [...DEFAULT_TOOLBAR, '|', 'control', 'print', 'pdf']
+})
+```
 
 ```js
 import { DEFAULT_TOOLBAR, createEditorUI } from '@baohu/canvas-editor-ui'
@@ -74,7 +82,15 @@ createEditorUI('#app', {
 
 ### 状态栏
 
-可选项目：`pageNo`（页码）`wordCount`（字数）`rowCol`（行列）`pageMode`（分页/连页）`mode`（编辑模式）`scale`（缩放）`paperDirection`（纸张方向）`fullscreen`（全屏）
+默认显示（`DEFAULT_STATUSBAR`）：`pageNo`（页码）`wordCount`（字数）`rowCol`（行列）`pageMode`（分页/连页）`scale`（缩放）`paperDirection`（纸张方向）`paperMargin`（页边距）`fullscreen`（全屏）
+
+内置但默认不显示：`mode`（编辑模式切换）。不加入也可以用 `ui.setMode(mode)` 切换模式。
+
+```js
+createEditorUI('#app', {
+  statusbar: [...DEFAULT_STATUSBAR, 'mode']
+})
+```
 
 ## 实例方法
 

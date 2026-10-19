@@ -720,11 +720,8 @@ export const DEFAULT_TOOLBAR: string[] = [
   'hyperlink',
   'separator',
   'pageBreak',
-  'control',
   'checkbox',
   'date',
   '|',
-  'search',
-  'print',
-  'pdf'
+  'search'
 ]

@@ -44,6 +44,7 @@ export type IStatusbarItem =
   | 'pageMode'
   | 'scale'
   | 'paperDirection'
+  | 'paperMargin'
   | 'mode'
   | 'fullscreen'
 

@@ -5,6 +5,7 @@ import {
   PageMode,
   PaperDirection
 } from '@baohu/canvas-editor'
+import { Dialog } from '../components/Dialog'
 import { Dropdown, createOptionList, setActiveOption } from '../components/Dropdown'
 import type { EditorUI } from '../EditorUI'
 import type { IStatusbarItem } from '../types'
@@ -14,6 +15,7 @@ import pageModeIcon from '../icons/page-mode.svg'
 import pageScaleAddIcon from '../icons/page-scale-add.svg'
 import pageScaleMinusIcon from '../icons/page-scale-minus.svg'
 import paperDirectionIcon from '../icons/paper-direction.svg'
+import paperMarginIcon from '../icons/paper-margin.svg'
 import requestFullscreenIcon from '../icons/request-fullscreen.svg'
 
 export const DEFAULT_STATUSBAR: IStatusbarItem[] = [
@@ -21,9 +23,9 @@ export const DEFAULT_STATUSBAR: IStatusbarItem[] = [
   'wordCount',
   'rowCol',
   'pageMode',
-  'mode',
   'scale',
   'paperDirection',
+  'paperMargin',
   'fullscreen'
 ]
 
@@ -160,6 +162,10 @@ export class Statusbar {
               : PaperDirection.HORIZONTAL
           )
         })
+      case 'paperMargin':
+        return iconButton(paperMarginIcon, locale.paperMargin, () =>
+          this.openPaperMarginDialog()
+        )
       case 'mode': {
         const modeList = [
           { label: locale.modeEdit, value: EditorMode.EDIT },
@@ -210,6 +216,39 @@ export class Statusbar {
         console.warn(`[canvas-editor-ui] unknown statusbar item: ${key}`)
         return null
     }
+  }
+
+  private openPaperMarginDialog() {
+    const { editor, locale } = this.ui
+    // 顺序：上、右、下、左
+    const nameList = ['top', 'right', 'bottom', 'left']
+    const labelList = [
+      locale.marginTop,
+      locale.marginRight,
+      locale.marginBottom,
+      locale.marginLeft
+    ]
+    const marginList = editor.command.getPaperMargin()
+    new Dialog({
+      title: locale.paperMargin,
+      confirmText: locale.confirm,
+      cancelText: locale.cancel,
+      fields: nameList.map((name, index) => ({
+        type: 'number',
+        name,
+        label: labelList[index],
+        required: true,
+        value: String(marginList[index])
+      })),
+      onConfirm: result => {
+        const [top, right, bottom, left] = nameList.map(name =>
+          Number(result[name])
+        )
+        const margins: [number, number, number, number] = [top, right, bottom, left]
+        if (margins.some(margin => isNaN(margin) || margin < 0)) return false
+        editor.command.executeSetPaperMargin(margins)
+      }
+    })
   }
 
   // 外部状态（如编辑模式）变化后刷新
