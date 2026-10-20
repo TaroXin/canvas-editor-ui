@@ -5,10 +5,15 @@
   "scripts": {
     "dev": "pnpm build && pnpm --filter playground dev",
     "build": "pnpm --filter @baohu/canvas-editor-ui build && pnpm --filter @baohu/canvas-editor-vue2 build",
-    "type:check": "pnpm -r type:check"
+    "type:check": "pnpm -r type:check",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.71.2",
     "vite": "^5.4.11"
   }
 }

@@ -1,4 +1,4 @@
-import { defineConfig, Plugin } from 'vite'
+import { defineConfig, loadEnv, Plugin } from 'vite'
 import { createReadStream, existsSync } from 'fs'
 import { createRequire } from 'module'
 import { dirname, resolve } from 'path'
@@ -37,10 +37,25 @@ function serveUmd(): Plugin {
   }
 }
 
-export default defineConfig({
+// 本地调试 docx 插件：在 playground/.env.local（不会提交）中设置
+// LOCAL_DOCX_PLUGIN=插件包目录，例如 ../../canvas-editor-plugin/packages/docx
+// 设置后直接引用插件源码，修改后热更新，无需发布或改 package.json
+function localDocxPluginAlias(mode: string): Record<string, string> {
+  const dir = loadEnv(mode, __dirname, 'LOCAL_').LOCAL_DOCX_PLUGIN
+  if (!dir) return {}
+  const entry = resolve(__dirname, dir, 'src/docx/index.ts')
+  if (!existsSync(entry)) throw new Error(`LOCAL_DOCX_PLUGIN: ${entry} not found`)
+  console.log(`\n  [playground] 使用本地 docx 插件：${entry}\n`)
+  return { '@baohu/canvas-editor-plugin-docx': entry }
+}
+
+export default defineConfig(({ mode }) => ({
   plugins: [serveUmd()],
   resolve: {
+    // 本地插件源码也使用 playground 的编辑器核心，避免加载两份
+    dedupe: ['@baohu/canvas-editor'],
     alias: {
+      ...localDocxPluginAlias(mode),
       // 直接引用源码，修改后热更新
       '@baohu/canvas-editor-ui': resolve(__dirname, '../packages/ui/src/index.ts'),
       '@baohu/canvas-editor-vue2': resolve(__dirname, '../packages/vue2/src/index.ts'),
@@ -55,8 +70,9 @@ export default defineConfig({
         vanilla: resolve(__dirname, 'vanilla.html'),
         script: resolve(__dirname, 'script.html'),
         vue2: resolve(__dirname, 'vue2.html'),
-        vue2Script: resolve(__dirname, 'vue2-script.html')
+        vue2Script: resolve(__dirname, 'vue2-script.html'),
+        docx: resolve(__dirname, 'docx.html')
       }
     }
   }
-})
+}))

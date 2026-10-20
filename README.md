@@ -16,20 +16,32 @@ pnpm install
 pnpm dev        # 先构建各个包，再启动预览站点 http://localhost:5180
 ```
 
-预览站点包含四个页面：
+预览站点包含以下页面：
 
 - **原生 JS（ESM）**：`import { createEditorUI }`，直接引用源码，修改后热更新
 - **script 引入**：加载构建后的 UMD 文件，与发布到 npm 的产物一致
 - **Vue 2**：`Vue.use()` 后使用 `<canvas-editor>` 组件
 - **Vue 2（script 引入）**：页面已有全局 `Vue` 时，引入后自动注册组件
+- **Word 导入**：通过 [`@baohu/canvas-editor-plugin-docx`](https://www.npmjs.com/package/@baohu/canvas-editor-plugin-docx) 导入、导出 .docx，可点击工具栏按钮选择文件，也可以直接把文件拖到页面上
 
 修改 `packages/*/src` 后，ESM 页面会热更新；两个 script 页面需要重新执行 `pnpm build`。
+
+### 调试本地 docx 插件
+
+Word 导入页默认使用 npm 上的 `@baohu/canvas-editor-plugin-docx`。要试未发布的本地修改，在 `playground/.env.local` 中写入插件包目录：
+
+```bash
+LOCAL_DOCX_PLUGIN=../../canvas-editor-plugin/packages/docx
+```
+
+重启 `pnpm dev` 后直接引用插件源码，修改后热更新。`.env.local` 不会提交，删除该文件即恢复使用 npm 版本，`package.json` 和锁文件都不受影响。
 
 ## 常用命令
 
 ```bash
 pnpm build        # 构建所有包
 pnpm type:check   # 类型检查
+pnpm lint         # ESLint 检查（规则与 @baohu/canvas-editor 一致）
 ```
 
 ## 目录结构
