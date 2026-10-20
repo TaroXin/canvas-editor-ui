@@ -39,7 +39,7 @@ importers:
   packages/vue2:
     dependencies:
       '@baohu/canvas-editor-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../ui
     devDependencies:
       '@baohu/canvas-editor':

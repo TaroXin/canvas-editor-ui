@@ -44,6 +44,18 @@ pnpm type:check   # 类型检查
 pnpm lint         # ESLint 检查（规则与 @baohu/canvas-editor 一致）
 ```
 
+## 发布
+
+`packages/` 下所有包使用同一个版本号，统一发布。包之间的依赖写作 `workspace:*`，发布时会替换为相同的版本号。
+
+```bash
+pnpm release:version 1.2.0     # 修改所有包的版本号
+git commit -am "chore: release 1.2.0" && git push
+pnpm release --otp=<验证码>     # 校验版本号一致，lint、类型检查、构建后发布所有包
+```
+
+`pnpm release` 要求工作区干净且在 `main` 分支；加 `--dry-run` 可以只试运行、不发布。新增的包放在 `packages/` 下即会一起发布。
+
 ## 目录结构
 
 ```
