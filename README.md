@@ -26,15 +26,16 @@ pnpm dev        # 先构建各个包，再启动预览站点 http://localhost:51
 
 修改 `packages/*/src` 后，ESM 页面会热更新；两个 script 页面需要重新执行 `pnpm build`。
 
-### 调试本地 docx 插件
+### 调试本地编辑器核心或 docx 插件
 
-Word 导入页默认使用 npm 上的 `@baohu/canvas-editor-plugin-docx`。要试未发布的本地修改，在 `playground/.env.local` 中写入插件包目录：
+playground 默认使用 npm 上的 `@baohu/canvas-editor` 和 `@baohu/canvas-editor-plugin-docx`。要试未发布的本地修改，在 `playground/.env.local` 中写入对应目录（按需写一项或两项）：
 
 ```bash
+LOCAL_CANVAS_EDITOR=../../canvas-editor
 LOCAL_DOCX_PLUGIN=../../canvas-editor-plugin/packages/docx
 ```
 
-重启 `pnpm dev` 后直接引用插件源码，修改后热更新。`.env.local` 不会提交，删除该文件即恢复使用 npm 版本，`package.json` 和锁文件都不受影响。
+重启 `pnpm dev` 后直接引用源码，修改后热更新。`.env.local` 不会提交，删除该文件即恢复使用 npm 版本，`package.json` 和锁文件都不受影响。
 
 ## 常用命令
 

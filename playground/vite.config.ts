@@ -37,16 +37,26 @@ function serveUmd(): Plugin {
   }
 }
 
-// 本地调试 docx 插件：在 playground/.env.local（不会提交）中设置
+// 本地调试编辑器核心或 docx 插件：在 playground/.env.local（不会提交）中设置
+// LOCAL_CANVAS_EDITOR=编辑器仓库目录，例如 ../../canvas-editor
 // LOCAL_DOCX_PLUGIN=插件包目录，例如 ../../canvas-editor-plugin/packages/docx
-// 设置后直接引用插件源码，修改后热更新，无需发布或改 package.json
-function localDocxPluginAlias(mode: string): Record<string, string> {
-  const dir = loadEnv(mode, __dirname, 'LOCAL_').LOCAL_DOCX_PLUGIN
-  if (!dir) return {}
-  const entry = resolve(__dirname, dir, 'src/docx/index.ts')
-  if (!existsSync(entry)) throw new Error(`LOCAL_DOCX_PLUGIN: ${entry} not found`)
-  console.log(`\n  [playground] 使用本地 docx 插件：${entry}\n`)
-  return { '@baohu/canvas-editor-plugin-docx': entry }
+// 设置后直接引用源码，修改后热更新，无需发布或改 package.json
+const LOCAL_SOURCE_LIST = [
+  { env: 'LOCAL_CANVAS_EDITOR', name: '@baohu/canvas-editor', entry: 'src/editor/index.ts' },
+  { env: 'LOCAL_DOCX_PLUGIN', name: '@baohu/canvas-editor-plugin-docx', entry: 'src/docx/index.ts' }
+]
+
+function localSourceAlias(mode: string): Record<string, string> {
+  const env = loadEnv(mode, __dirname, 'LOCAL_')
+  const alias: Record<string, string> = {}
+  for (const { env: key, name, entry } of LOCAL_SOURCE_LIST) {
+    if (!env[key]) continue
+    const file = resolve(__dirname, env[key], entry)
+    if (!existsSync(file)) throw new Error(`${key}: ${file} not found`)
+    console.log(`\n  [playground] ${name} 使用本地源码：${file}\n`)
+    alias[name] = file
+  }
+  return alias
 }
 
 export default defineConfig(({ mode }) => ({
@@ -55,7 +65,7 @@ export default defineConfig(({ mode }) => ({
     // 本地插件源码也使用 playground 的编辑器核心，避免加载两份
     dedupe: ['@baohu/canvas-editor'],
     alias: {
-      ...localDocxPluginAlias(mode),
+      ...localSourceAlias(mode),
       // 直接引用源码，修改后热更新
       '@baohu/canvas-editor-ui': resolve(__dirname, '../packages/ui/src/index.ts'),
       '@baohu/canvas-editor-vue2': resolve(__dirname, '../packages/vue2/src/index.ts'),

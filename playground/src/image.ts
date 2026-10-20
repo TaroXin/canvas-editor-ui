@@ -4,6 +4,7 @@ import {
   ElementType,
   ImageDisplay,
   TitleLevel,
+  VerticalAlign,
   type IEditorData,
   type IElement
 } from '@baohu/canvas-editor'
@@ -68,6 +69,25 @@ function image(
   }
 }
 
+// 嵌入型图片与同行文字的垂直对齐
+const VERTICAL_ALIGN_LIST = [
+  { label: '顶端对齐', verticalAlign: VerticalAlign.TOP },
+  { label: '居中对齐', verticalAlign: VerticalAlign.MIDDLE },
+  { label: '底端对齐（默认）', verticalAlign: VerticalAlign.BOTTOM }
+]
+
+function alignedImage(verticalAlign: VerticalAlign): IElement {
+  return { ...image(ImageDisplay.BLOCK)!, imgVerticalAlign: verticalAlign }
+}
+
+function alignedLaTex(verticalAlign: VerticalAlign): IElement {
+  return {
+    type: ElementType.LATEX,
+    value: '\\frac{a+b}{c}',
+    imgVerticalAlign: verticalAlign
+  }
+}
+
 function title(text: string): IElement {
   return {
     type: ElementType.TITLE,
@@ -126,6 +146,32 @@ function createData(
         type: ControlType.TEXT,
         placeholder: '请输入',
         value
+      }
+    })
+    main.push({ value: '\n' })
+  })
+  // 垂直对齐（也可在图片上右键 → 图片对齐 切换）
+  main.push(title('三、嵌入型图片、公式与文字的垂直对齐'))
+  main.push({ value: '\n右键嵌入型图片或公式 → 对齐方式，可切换顶端、居中、底端。\n' })
+  VERTICAL_ALIGN_LIST.forEach(({ label, verticalAlign }) => {
+    main.push({ value: `\n${label}（${verticalAlign}）\n`, bold: true })
+    main.push({ value: '正文：图片前的文字' })
+    main.push(alignedImage(verticalAlign))
+    main.push({ value: '图片后的文字\n' })
+    main.push({ value: '公式：公式前的文字' })
+    main.push(alignedLaTex(verticalAlign))
+    main.push({ value: '公式后的文字\n' })
+    main.push({
+      type: ElementType.CONTROL,
+      value: '',
+      control: {
+        type: ControlType.TEXT,
+        placeholder: '请输入',
+        value: [
+          { value: '控件：图片前的文字' },
+          alignedImage(verticalAlign),
+          { value: '图片后的文字' }
+        ]
       }
     })
     main.push({ value: '\n' })
