@@ -90,8 +90,9 @@ if (isDryRun) {
     run(`git commit -am "chore: release ${nextVersion}"`)
   }
   if (!read(`git tag --list v${nextVersion}`)) {
-    run(`git tag v${nextVersion}`)
+    run(`git tag -a v${nextVersion} -m "release ${nextVersion}"`)
   }
-  run('git push --follow-tags')
+  run('git push origin main')
+  run(`git push origin v${nextVersion}`)
   console.log(`\n已发布并推送 ${nextVersion}`)
 }

@@ -37,7 +37,7 @@
     "vue": "^2.6.0"
   },
   "devDependencies": {
-    "@baohu/canvas-editor": "1.0.5-baohu.3",
+    "@baohu/canvas-editor": "1.0.5-baohu.4",
     "vue": "2.7.16"
   }
 }
