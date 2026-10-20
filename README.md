@@ -46,15 +46,22 @@ pnpm lint         # ESLint 检查（规则与 @baohu/canvas-editor 一致）
 
 ## 发布
 
-`packages/` 下所有包使用同一个版本号，统一发布。包之间的依赖写作 `workspace:*`，发布时会替换为相同的版本号。
+版本号只在根目录 `package.json` 维护，`packages/` 下所有包统一版本、统一发布，不需要手动改版本号。包之间的依赖写作 `workspace:*`，发布时替换为相同的版本号。
 
 ```bash
-pnpm release:version 1.2.0     # 修改所有包的版本号
-git commit -am "chore: release 1.2.0" && git push
-pnpm release --otp=<验证码>     # 校验版本号一致，lint、类型检查、构建后发布所有包
+pnpm release patch             # 1.1.0 -> 1.1.1，也可以是 minor / major / 具体版本号
+pnpm release minor --dry-run   # 试运行：构建并打包，不发布、不提交
 ```
 
-`pnpm release` 要求工作区干净且在 `main` 分支；加 `--dry-run` 可以只试运行、不发布。新增的包放在 `packages/` 下即会一起发布。
+`pnpm release` 依次执行：
+
+1. 检查工作区干净且在 `main` 分支
+2. 递增根目录版本号，同步到所有包
+3. lint、类型检查、构建
+4. 提示输入 npm 验证码后发布所有包
+5. 提交 `chore: release x.y.z`、打 tag `vx.y.z` 并推送
+
+任一步失败都会还原版本号。部分包已发布后失败的，用同一个版本号重跑（如 `pnpm release 1.1.1`），已发布的包会自动跳过。新增的包放在 `packages/` 下即会一起发布。
 
 ## 目录结构
 

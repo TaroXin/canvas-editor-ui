@@ -1,13 +1,13 @@
 {
   "name": "canvas-editor-ui-monorepo",
   "private": true,
+  "version": "1.1.0",
   "description": "UI (toolbar, statusbar, dialogs) and framework wrappers for @baohu/canvas-editor",
   "scripts": {
     "dev": "pnpm build && pnpm --filter playground dev",
     "build": "pnpm --filter @baohu/canvas-editor-ui build && pnpm --filter @baohu/canvas-editor-vue2 build",
     "type:check": "pnpm -r type:check",
     "lint": "eslint .",
-    "release:version": "node scripts/set-version.mjs",
     "release": "node scripts/release.mjs"
   },
   "devDependencies": {
