@@ -1,4 +1,5 @@
 import {
+  CheckboxMarkType,
   ControlType,
   ElementType,
   ListStyle,
@@ -338,6 +339,9 @@ function openControlDialog({ editor, locale }: IToolbarContext) {
         control.code = null
         control.valueSets = valueSets
       }
+      if (type === ControlType.CHECKBOX) {
+        control.markType = CheckboxMarkType.CROSS
+      }
       if (type === ControlType.DATE) {
         control.dateFormat = result.dateFormat
       }
@@ -632,11 +636,27 @@ export function createBuiltinItems(
       editor.command.executePageBreak()
     ),
     button('control', locale.control, controlIcon, openControlDialog),
-    button('checkbox', locale.checkbox, checkboxIcon, ({ editor }) =>
-      editor.command.executeInsertElementList([
-        { type: ElementType.CHECKBOX, value: '', checkbox: { value: false } }
-      ])
-    ),
+    dropdownItem('checkbox', locale.checkbox, checkboxIcon, ({ editor }, close) => {
+      const list = createOptionList(
+        [
+          { label: `☒ ${locale.checkboxCross}`, value: CheckboxMarkType.CROSS },
+          { label: `☑ ${locale.checkboxCheck}`, value: CheckboxMarkType.CHECK }
+        ],
+        value => {
+          close()
+          editor.command.executeInsertElementList([
+            {
+              type: ElementType.CHECKBOX,
+              value: '',
+              checkbox: { value: false, markType: <CheckboxMarkType>value }
+            }
+          ])
+        }
+      )
+      // 默认叉选
+      setActiveOption(list, CheckboxMarkType.CROSS)
+      return list
+    }),
     dropdownItem('date', locale.date, dateIcon, ({ editor }, close) => {
       const now = new Date()
       const formatList = [

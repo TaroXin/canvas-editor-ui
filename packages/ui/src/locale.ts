@@ -49,6 +49,8 @@ export const defaultLocale = {
   controlValueSetsPlaceholder: '每行一个选项，如：\n有\n无',
   controlDateFormat: '日期格式',
   checkbox: '复选框',
+  checkboxCross: '叉选',
+  checkboxCheck: '勾选',
   date: '日期',
   search: '查找替换',
   searchKeyword: '查找',

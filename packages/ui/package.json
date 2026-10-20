@@ -1,6 +1,6 @@
 {
   "name": "@baohu/canvas-editor-ui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Toolbar, statusbar and dialogs for @baohu/canvas-editor, framework-agnostic",
   "license": "MIT",
   "main": "./dist/canvas-editor-ui.umd.js",
