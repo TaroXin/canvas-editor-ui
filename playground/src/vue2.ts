@@ -44,6 +44,7 @@ new Vue({
         <a href="/vue2.html">Vue 2</a>
         <a href="/vue2-script.html">Vue 2（script 引入）</a>
         <a href="/docx.html">Word 导入</a>
+        <a href="/image.html">图片排版</a>
         <span class="actions">
           <span style="font-size:13px;color:#6b7280;align-self:center">内容变更 {{ changeCount }} 次</span>
           <button @click="toggleReadonly">{{ readonly ? '切换为编辑' : '切换为只读' }}</button>

@@ -71,7 +71,8 @@ export default defineConfig(({ mode }) => ({
         script: resolve(__dirname, 'script.html'),
         vue2: resolve(__dirname, 'vue2.html'),
         vue2Script: resolve(__dirname, 'vue2-script.html'),
-        docx: resolve(__dirname, 'docx.html')
+        docx: resolve(__dirname, 'docx.html'),
+        image: resolve(__dirname, 'image.html')
       }
     }
   }
