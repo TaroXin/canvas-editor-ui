@@ -30,8 +30,8 @@ importers:
   packages/ui:
     devDependencies:
       '@baohu/canvas-editor':
-        specifier: 1.0.5-baohu.4
-        version: 1.0.5-baohu.4
+        specifier: 1.0.5-baohu.5
+        version: 1.0.5-baohu.5
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.2
         version: 3.5.2(vite@5.4.21(@types/node@20.19.43))
@@ -43,8 +43,8 @@ importers:
         version: link:../ui
     devDependencies:
       '@baohu/canvas-editor':
-        specifier: 1.0.5-baohu.4
-        version: 1.0.5-baohu.4
+        specifier: 1.0.5-baohu.5
+        version: 1.0.5-baohu.5
       vue:
         specifier: 2.7.16
         version: 2.7.16
@@ -52,11 +52,11 @@ importers:
   playground:
     dependencies:
       '@baohu/canvas-editor':
-        specifier: 1.0.5-baohu.4
-        version: 1.0.5-baohu.4
+        specifier: 1.0.5-baohu.5
+        version: 1.0.5-baohu.5
       '@baohu/canvas-editor-plugin-docx':
         specifier: 1.0.0-baohu.3
-        version: 1.0.0-baohu.3(@baohu/canvas-editor@1.0.5-baohu.4)
+        version: 1.0.0-baohu.3(@baohu/canvas-editor@1.0.5-baohu.5)
       '@baohu/canvas-editor-ui':
         specifier: workspace:^
         version: link:../packages/ui
@@ -91,8 +91,8 @@ packages:
     peerDependencies:
       '@baohu/canvas-editor': '>=1.0.5-baohu.2'
 
-  '@baohu/canvas-editor@1.0.5-baohu.4':
-    resolution: {integrity: sha512-pcBzUtSS0hsA6XQKKo8/k7jev3BdxL2AtapEw1KDC4cCnF9w7g6pHKdxR1IpbcOrNmKtVcg/n6bcClWZwiSE3w==}
+  '@baohu/canvas-editor@1.0.5-baohu.5':
+    resolution: {integrity: sha512-LUrOv4Raol2tCG+dtSch4/8bE07o49ker9HvlMYub8A8yZSjzXME3Mlt35Dcazbi2++tB0Vt0bRpvf5BGESeyw==}
 
   '@cacheable/memory@2.2.0':
     resolution: {integrity: sha512-CTLKqLItRCEixEAewD3/j9DB3/o96gpTPD4eJ1v+DGOlxZRZncRQkGYqqnAGCscYd6RNeXfGeiuCphsPtqyIfQ==}
@@ -967,14 +967,14 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@baohu/canvas-editor-plugin-docx@1.0.0-baohu.3(@baohu/canvas-editor@1.0.5-baohu.4)':
+  '@baohu/canvas-editor-plugin-docx@1.0.0-baohu.3(@baohu/canvas-editor@1.0.5-baohu.5)':
     dependencies:
-      '@baohu/canvas-editor': 1.0.5-baohu.4
+      '@baohu/canvas-editor': 1.0.5-baohu.5
       color: 4.2.3
       docx: 8.5.0
       jszip: 3.10.2
 
-  '@baohu/canvas-editor@1.0.5-baohu.4': {}
+  '@baohu/canvas-editor@1.0.5-baohu.5': {}
 
   '@cacheable/memory@2.2.0':
     dependencies:
