@@ -1,4 +1,8 @@
-import Editor, { EditorMode } from '@baohu/canvas-editor'
+import Editor, {
+  EditorMode,
+  INTERNAL_CONTEXT_MENU_KEY
+} from '@baohu/canvas-editor'
+import { ControlPanel } from './components/ControlPanel'
 import { defaultLocale, ILocale } from './locale'
 import { DEFAULT_STATUSBAR, Statusbar } from './statusbar/Statusbar'
 import { Toolbar } from './toolbar/Toolbar'
@@ -39,6 +43,7 @@ export class EditorUI {
       this.statusbar = new Statusbar(this, options.statusbar || DEFAULT_STATUSBAR)
       this.root.append(this.statusbar.el)
     }
+    this.registerControlContextMenu()
     // 编辑器没有模式变化事件：渲染后比对，兼容直接调用 executeMode 的情况
     this.mode = this.editor.command.getOptions().mode
     this.renderChange = () => {
@@ -47,6 +52,40 @@ export class EditorUI {
       }
     }
     this.editor.eventBus.on('renderChange', this.renderChange)
+  }
+
+  private registerControlContextMenu() {
+    const { register } = this.editor
+    // 不可删除的控件不显示「删除控件」，设计模式不受删除规则限制
+    const deleteMenu = register
+      .getContextMenuList()
+      .find(menu => menu.key === INTERNAL_CONTEXT_MENU_KEY.CONTROL.DELETE)
+    const deleteWhen = deleteMenu?.when
+    if (deleteMenu && deleteWhen) {
+      deleteMenu.when = payload =>
+        deleteWhen(payload) &&
+        (payload.options.mode === EditorMode.DESIGN ||
+          payload.startElement?.control?.deletable !== false)
+    }
+    // 设计模式下右键控件可修改控件属性
+    register.contextMenuList([
+      {
+        name: this.locale.controlProperty,
+        when: payload =>
+          payload.options.mode === EditorMode.DESIGN &&
+          !payload.editorHasSelection &&
+          !!payload.startElement?.controlId,
+        callback: (_command, context) => {
+          const { controlId, control } = context.startElement!
+          new ControlPanel({
+            editor: this.editor,
+            locale: this.locale,
+            controlId,
+            control
+          })
+        }
+      }
+    ])
   }
 
   private syncMode() {

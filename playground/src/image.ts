@@ -1,4 +1,4 @@
-import { DEFAULT_TOOLBAR, createEditorUI } from '@baohu/canvas-editor-ui'
+import { createEditorUI } from '@baohu/canvas-editor-ui'
 import {
   ControlType,
   ElementType,
@@ -8,6 +8,7 @@ import {
   type IEditorData,
   type IElement
 } from '@baohu/canvas-editor'
+import { PLAYGROUND_STATUSBAR, registerInsertControlMenu } from './common'
 
 const IMAGE_URL = '/image-demo.svg'
 const IMAGE_WIDTH = 100
@@ -181,8 +182,9 @@ function createData(
 
 const ui = createEditorUI('#app', {
   data: createData(),
-  toolbar: [...DEFAULT_TOOLBAR, '|', 'control']
+  statusbar: PLAYGROUND_STATUSBAR
 })
+registerInsertControlMenu(ui)
 const editor = ui.editor
 
 // 先按无浮动图片排版，再取锚点文字的页面坐标放置浮动图片

@@ -10,7 +10,7 @@
   <div id="app">
     <nav class="nav"><strong>canvas-editor-ui</strong><a href="/">首页</a><a href="/vanilla.html">原生 JS（ESM）</a><a href="/script.html">script 引入</a><a href="/vue2.html">Vue 2</a><a href="/vue2-script.html">Vue 2（script 引入）</a><a href="/docx.html">Word 导入</a><a href="/image.html">图片排版</a><span class="actions" id="actions"></span></nav>
     <div class="app">
-      <canvas-editor ref="editor" :data="data" @ready="onReady" @change="onChange"></canvas-editor>
+      <canvas-editor ref="editor" :data="data" :statusbar="statusbar" @ready="onReady" @change="onChange"></canvas-editor>
     </div>
   </div>
   <script src="/sample-data.js"></script>
@@ -20,11 +20,34 @@
   <!-- 检测到全局 Vue 时自动注册 <canvas-editor> 组件 -->
   <script src="/lib/canvas-editor-vue2.umd.js"></script>
   <script>
+    // 设计模式下右键插入控件，与「控件属性」共用控件面板
+    function registerInsertControlMenu(ui) {
+      ui.editor.register.contextMenuList([{
+        name: ui.locale.controlAdd,
+        when: function (payload) {
+          // 控件内部不允许新增（避免嵌套），光标在控件后缀上时插入到控件之后
+          var element = payload.startElement
+          var isInControl = !!(element && element.controlId) && element.controlComponent !== 'postfix'
+          return payload.options.mode === 'design' && payload.editorTextFocus && !isInControl
+        },
+        callback: function () {
+          new CanvasEditorUI.ControlPanel({ editor: ui.editor, locale: ui.locale })
+        }
+      }])
+    }
     new Vue({
       el: '#app',
-      data: { data: window.SAMPLE_DATA, changeCount: 0 },
+      data: {
+        data: window.SAMPLE_DATA,
+        // 开启编辑模式切换，仅用于演示；实际接入时通过 ui.setMode() 切换
+        statusbar: CanvasEditorUI.DEFAULT_STATUSBAR.concat(['mode']),
+        changeCount: 0
+      },
       methods: {
-        onReady: function (editor) { window.editor = editor },
+        onReady: function (editor, ui) {
+          registerInsertControlMenu(ui)
+          window.editor = editor
+        },
         onChange: function () { this.changeCount++ }
       },
       mounted: function () {

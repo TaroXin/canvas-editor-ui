@@ -1,19 +1,15 @@
-import {
-  DEFAULT_STATUSBAR,
-  DEFAULT_TOOLBAR,
-  createEditorUI
-} from '@baohu/canvas-editor-ui'
+import { DEFAULT_TOOLBAR, createEditorUI } from '@baohu/canvas-editor-ui'
 import type { IEditorData } from '@baohu/canvas-editor'
+import { PLAYGROUND_STATUSBAR, registerInsertControlMenu } from './common'
 
 const data = (window as unknown as { SAMPLE_DATA: IEditorData }).SAMPLE_DATA
 
 const ui = createEditorUI('#app', {
   data,
-  // 默认按钮 + 默认不显示的内置按钮（控件、打印、导出 PDF）+ 自定义按钮
+  // 默认按钮 + 默认不显示的内置按钮（打印、导出 PDF）+ 自定义按钮
   toolbar: [
     ...DEFAULT_TOOLBAR,
     '|',
-    'control',
     'print',
     'pdf',
     '|',
@@ -28,7 +24,8 @@ const ui = createEditorUI('#app', {
     }
   ],
   // 默认状态栏 + 编辑模式切换
-  statusbar: [...DEFAULT_STATUSBAR, 'mode']
+  statusbar: PLAYGROUND_STATUSBAR
 })
+registerInsertControlMenu(ui)
 
 Object.assign(window, { ui, editor: ui.editor })

@@ -53,11 +53,11 @@ ui.destroy()                  // 销毁
 
 默认显示的按钮（`DEFAULT_TOOLBAR`）：`undo` `redo` `painter` `format` `font` `size` `sizeAdd` `sizeMinus` `bold` `italic` `underline` `strikeout` `superscript` `subscript` `color` `highlight` `title` `left` `center` `right` `alignment` `justify` `rowMargin` `list` `table` `image` `hyperlink` `separator` `pageBreak` `checkbox` `date` `search`
 
-内置但默认不显示、需要时自行加入的按钮：`control`（插入控件）`print`（打印）`pdf`（导出 PDF）
+内置但默认不显示、需要时自行加入的按钮：`print`（打印）`pdf`（导出 PDF）
 
 ```js
 createEditorUI('#app', {
-  toolbar: [...DEFAULT_TOOLBAR, '|', 'control', 'print', 'pdf']
+  toolbar: [...DEFAULT_TOOLBAR, '|', 'print', 'pdf']
 })
 ```
 
@@ -84,7 +84,7 @@ createEditorUI('#app', {
 
 默认显示（`DEFAULT_STATUSBAR`）：`pageNo`（页码）`wordCount`（字数）`rowCol`（行列）`pageMode`（分页/连页）`scale`（缩放）`paperDirection`（纸张方向）`paperMargin`（页边距）`fullscreen`（全屏）
 
-内置但默认不显示：`mode`（编辑模式切换）。不加入也可以用 `ui.setMode(mode)` 切换模式。
+内置但默认不显示：`mode`（编辑模式切换，含编辑、清洁、只读、表单、打印、设计、涂鸦、留痕）。实际接入时一般不开放给用户，通过代码 `ui.setMode(mode)` 切换模式。
 
 ```js
 createEditorUI('#app', {
@@ -99,5 +99,30 @@ createEditorUI('#app', {
 | `ui.editor` | canvas-editor 实例 |
 | `ui.setMode(mode)` | 切换编辑模式（直接调用 `editor.command.executeMode` 也会同步界面） |
 | `ui.destroy()` | 销毁编辑器和界面 |
+
+## 控件
+
+右键菜单：
+
+- 删除控件：`deletable: false` 的控件不显示该菜单，设计模式除外
+- 控件属性：仅设计模式下，右键控件时显示，打开控件面板修改属性（不可修改控件类型）
+
+控件面板按控件类型排版，分为基础、选项、规则校验、样式、高级几页，覆盖控件支持的全部属性（值集、多选、日期格式、可删除/禁用/必填、校验规则、背景色、计算表达式、级联规则、扩展数据等）。
+
+工具栏不提供插入控件的按钮。面板已导出，可以接入自己的新增入口，例如设计模式下右键插入控件：
+
+```js
+import { ControlPanel } from '@baohu/canvas-editor-ui'
+
+ui.editor.register.contextMenuList([
+  {
+    name: '新增控件',
+    when: payload => payload.options.mode === 'design' && payload.editorTextFocus,
+    callback: () => new ControlPanel({ editor: ui.editor, locale: ui.locale })
+  }
+])
+```
+
+`ControlPanel` 参数：`editor`、`locale`，新增时可传 `type` 指定默认类型；修改时传 `controlId` 和 `control`。
 
 另外导出了 `Dialog`，可以用来做和内置弹窗风格一致的自定义弹窗。

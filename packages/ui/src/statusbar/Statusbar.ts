@@ -173,7 +173,9 @@ export class Statusbar {
           { label: locale.modeReadonly, value: EditorMode.READONLY },
           { label: locale.modeForm, value: EditorMode.FORM },
           { label: locale.modePrint, value: EditorMode.PRINT },
-          { label: locale.modeDesign, value: EditorMode.DESIGN }
+          { label: locale.modeDesign, value: EditorMode.DESIGN },
+          { label: locale.modeGraffiti, value: EditorMode.GRAFFITI },
+          { label: locale.modeTrace, value: EditorMode.TRACE }
         ]
         const label = h('span', { class: cls('statusbar__mode') })
         const list = createOptionList(modeList, value => {

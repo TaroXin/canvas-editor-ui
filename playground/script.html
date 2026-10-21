@@ -15,6 +15,21 @@
   <!-- 2. 界面（全局变量 CanvasEditorUI） -->
   <script src="/lib/canvas-editor-ui.umd.js"></script>
   <script>
+    // 设计模式下右键插入控件，与「控件属性」共用控件面板
+    function registerInsertControlMenu(ui) {
+      ui.editor.register.contextMenuList([{
+        name: ui.locale.controlAdd,
+        when: function (payload) {
+          // 控件内部不允许新增（避免嵌套），光标在控件后缀上时插入到控件之后
+          var element = payload.startElement
+          var isInControl = !!(element && element.controlId) && element.controlComponent !== 'postfix'
+          return payload.options.mode === 'design' && payload.editorTextFocus && !isInControl
+        },
+        callback: function () {
+          new CanvasEditorUI.ControlPanel({ editor: ui.editor, locale: ui.locale })
+        }
+      }])
+    }
     var ui = CanvasEditorUI.createEditorUI('#app', {
       data: window.SAMPLE_DATA,
       // 在默认按钮后追加一个自定义按钮
@@ -26,8 +41,11 @@
         onClick: function (ctx) {
           console.log(JSON.stringify(ctx.editor.command.getValue().data))
         }
-      }])
+      }]),
+      // 开启编辑模式切换，仅用于演示；实际接入时通过 ui.setMode() 切换
+      statusbar: CanvasEditorUI.DEFAULT_STATUSBAR.concat(['mode'])
     })
+    registerInsertControlMenu(ui)
     window.ui = ui
     document.querySelectorAll('.nav a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === location.pathname) })
   </script>

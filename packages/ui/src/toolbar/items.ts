@@ -1,6 +1,5 @@
 import {
   CheckboxMarkType,
-  ControlType,
   ElementType,
   ListStyle,
   ListType,
@@ -8,7 +7,6 @@ import {
   TitleLevel,
   splitText
 } from '@baohu/canvas-editor'
-import type { IElement } from '@baohu/canvas-editor'
 import { Dialog } from '../components/Dialog'
 import {
   Dropdown,
@@ -31,7 +29,6 @@ import boldIcon from '../icons/bold.svg'
 import centerIcon from '../icons/center.svg'
 import checkboxIcon from '../icons/checkbox.svg'
 import colorIcon from '../icons/color.svg'
-import controlIcon from '../icons/control.svg'
 import dateIcon from '../icons/date.svg'
 import formatIcon from '../icons/format.svg'
 import highlightIcon from '../icons/highlight.svg'
@@ -267,88 +264,6 @@ function openHyperlinkDialog({ editor, locale }: IToolbarContext) {
       editor.command.executeHyperlink({
         url,
         valueList: splitText(text).map(value => ({ value }))
-      })
-    }
-  })
-}
-
-const OPTION_CONTROL_TYPES: string[] = [
-  ControlType.SELECT,
-  ControlType.CHECKBOX,
-  ControlType.RADIO
-]
-
-function openControlDialog({ editor, locale }: IToolbarContext) {
-  new Dialog({
-    title: locale.control,
-    confirmText: locale.confirm,
-    cancelText: locale.cancel,
-    fields: [
-      {
-        type: 'select',
-        name: 'type',
-        label: locale.controlType,
-        options: [
-          { label: locale.controlText, value: ControlType.TEXT },
-          { label: locale.controlSelect, value: ControlType.SELECT },
-          { label: locale.controlCheckbox, value: ControlType.CHECKBOX },
-          { label: locale.controlRadio, value: ControlType.RADIO },
-          { label: locale.controlDate, value: ControlType.DATE },
-          { label: locale.controlNumber, value: ControlType.NUMBER }
-        ]
-      },
-      {
-        type: 'text',
-        name: 'placeholder',
-        label: locale.controlPlaceholder
-      },
-      {
-        type: 'textarea',
-        name: 'valueSets',
-        label: locale.controlValueSets,
-        placeholder: locale.controlValueSetsPlaceholder,
-        height: 80
-      },
-      {
-        type: 'select',
-        name: 'dateFormat',
-        label: locale.controlDateFormat,
-        options: [
-          { label: 'yyyy-MM-dd', value: 'yyyy-MM-dd' },
-          { label: 'yyyy-MM-dd HH:mm:ss', value: 'yyyy-MM-dd HH:mm:ss' }
-        ]
-      }
-    ],
-    onConfirm: result => {
-      const type = <ControlType>result.type
-      const valueSets = result.valueSets
-        .split('\n')
-        .map(value => value.trim())
-        .filter(Boolean)
-        .map(value => ({ value, code: value }))
-      // 下拉、复选、单选必须提供选项
-      if (OPTION_CONTROL_TYPES.includes(type) && !valueSets.length) {
-        return false
-      }
-      const control: IElement['control'] = {
-        type,
-        value: null,
-        placeholder: result.placeholder || undefined
-      }
-      if (OPTION_CONTROL_TYPES.includes(type)) {
-        control.code = null
-        control.valueSets = valueSets
-      }
-      if (type === ControlType.CHECKBOX) {
-        control.markType = CheckboxMarkType.CROSS
-      }
-      if (type === ControlType.DATE) {
-        control.dateFormat = result.dateFormat
-      }
-      editor.command.executeInsertControl({
-        type: ElementType.CONTROL,
-        value: '',
-        control
       })
     }
   })
@@ -635,7 +550,6 @@ export function createBuiltinItems(
     button('pageBreak', locale.pageBreak, pageBreakIcon, ({ editor }) =>
       editor.command.executePageBreak()
     ),
-    button('control', locale.control, controlIcon, openControlDialog),
     dropdownItem('checkbox', locale.checkbox, checkboxIcon, ({ editor }, close) => {
       const list = createOptionList(
         [

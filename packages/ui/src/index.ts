@@ -5,6 +5,8 @@ export type {
   IDialogOptions,
   IDialogResult
 } from './components/Dialog'
+export { ControlPanel } from './components/ControlPanel'
+export type { IControlPanelOptions } from './components/ControlPanel'
 export { defaultLocale } from './locale'
 export type { ILocale } from './locale'
 export { DEFAULT_TOOLBAR, FONT_LIST, SIZE_LIST } from './toolbar/items'

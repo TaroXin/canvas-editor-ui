@@ -1,5 +1,6 @@
 import { DEFAULT_TOOLBAR, createEditorUI } from '@baohu/canvas-editor-ui'
 import docxPlugin from '@baohu/canvas-editor-plugin-docx'
+import { PLAYGROUND_STATUSBAR, registerInsertControlMenu } from './common'
 
 const ui = createEditorUI('#app', {
   data: { main: [{ value: '点击工具栏右侧的「导入 Word」，或把 .docx 文件拖到页面上。' }] },
@@ -14,8 +15,10 @@ const ui = createEditorUI('#app', {
       keepEnabledInReadonly: true,
       onClick: ({ editor }) => editor.command.executeExportDocx({ fileName: 'canvas-editor' })
     }
-  ]
+  ],
+  statusbar: PLAYGROUND_STATUSBAR
 })
+registerInsertControlMenu(ui)
 const editor = ui.editor
 editor.use(docxPlugin)
 

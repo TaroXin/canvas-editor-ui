@@ -2,6 +2,8 @@ import Vue from 'vue'
 import CanvasEditorVue2 from '@baohu/canvas-editor-vue2'
 import type Editor from '@baohu/canvas-editor'
 import type { IEditorData } from '@baohu/canvas-editor'
+import type { EditorUI } from '@baohu/canvas-editor-ui'
+import { PLAYGROUND_STATUSBAR, registerInsertControlMenu } from './common'
 
 Vue.use(CanvasEditorVue2)
 
@@ -9,9 +11,15 @@ const data = (window as unknown as { SAMPLE_DATA: IEditorData }).SAMPLE_DATA
 
 new Vue({
   el: '#app',
-  data: () => ({ data, changeCount: 0, readonly: false }),
+  data: () => ({
+    data,
+    statusbar: PLAYGROUND_STATUSBAR,
+    changeCount: 0,
+    readonly: false
+  }),
   methods: {
-    onReady(editor: Editor) {
+    onReady(editor: Editor, ui: EditorUI) {
+      registerInsertControlMenu(ui)
       Object.assign(window, { editor })
     },
     onChange() {
@@ -52,7 +60,7 @@ new Vue({
         </span>
       </nav>
       <div class="app">
-        <canvas-editor ref="editor" :data="data" @ready="onReady" @change="onChange" />
+        <canvas-editor ref="editor" :data="data" :statusbar="statusbar" @ready="onReady" @change="onChange" />
       </div>
     </div>
   `
