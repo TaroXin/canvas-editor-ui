@@ -1,7 +1,7 @@
 {
   "name": "canvas-editor-ui-monorepo",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "UI (toolbar, statusbar, dialogs) and framework wrappers for @baohu/canvas-editor",
   "scripts": {
     "dev": "pnpm build && pnpm --filter playground dev",
