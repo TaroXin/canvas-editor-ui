@@ -97,7 +97,7 @@ export const SIZE_LIST: IDropdownOption[] = [
   ['八号', 6]
 ].map(([label, value]) => ({ label: String(label), value: String(value) }))
 
-const ROW_MARGIN_LIST = ['1', '1.25', '1.5', '1.75', '2', '2.5', '3']
+const ROW_MARGIN_LIST = ['0.5', '0.75', '1', '1.25', '1.5', '1.75', '2', '2.5', '3']
 
 // 分割线虚线样式
 const SEPARATOR_LIST: { label: string; dashArray: number[] }[] = [
